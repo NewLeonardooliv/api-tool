@@ -1,0 +1,16 @@
+{
+    "name": "leonardo/api-tool",
+    "description": "Micro-Framework Api Tool",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Leonardo Oliveira",
+            "email": "leonardo_oliveira7@hotmail.com"
+        }
+    ],
+    "require": {}
+}
