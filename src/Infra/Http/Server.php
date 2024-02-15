@@ -6,8 +6,6 @@ use App\Infra\Contracts\Controller;
 use App\Infra\Contracts\Kernel;
 use App\Infra\Http\Core\Router;
 
-require __DIR__.'/Routes/Routes.php';
-
 class Server implements Kernel
 {
     public static function bootstrap()
@@ -24,11 +22,7 @@ class Server implements Kernel
     private static function findController(): Controller
     {
         $method = $_SERVER['REQUEST_METHOD'];
-        $path = $_SERVER['REQUEST_URI'];
-
-        // print '<pre>';
-        // print_r(Router::$routes[$method][$path]);
-        // print '<\pre>';
+        $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
         return Router::findRoute($method, $path);
     }

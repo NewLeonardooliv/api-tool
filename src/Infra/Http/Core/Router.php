@@ -5,6 +5,8 @@ namespace App\Infra\Http\Core;
 use App\Infra\Contracts\Controller;
 use App\Infra\Http\Core\Errors\InvalidRoute;
 
+require __DIR__.'/../Routes/Routes.php';
+
 class Router
 {
     private const METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
