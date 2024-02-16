@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Infra\Http\Core\UseCases;
+namespace App\Core\Infra\UseCase;
 
 use App\Infra\Contracts\Controller as ContractsController;
 
-class Controller
+class InstanceController
 {
     public function execute(string $controller): ContractsController
     {
@@ -17,7 +17,7 @@ class Controller
         return $controller;
     }
 
-    private static function isValid($middleware)
+    private function isValid($middleware)
     {
         return $middleware instanceof Middleware;
     }

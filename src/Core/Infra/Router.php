@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Infra\Http\Core;
+namespace App\Core\Infra;
 
-use App\Infra\Http\Core\Errors\InvalidRoute;
-use App\Infra\Http\Core\UseCases\Controller;
-use App\Infra\Http\Core\UseCases\Middlewares;
+use App\Core\Infra\Errors\InvalidRoute;
+use App\Core\Infra\UseCase\InstanceController;
+use App\Core\Infra\UseCase\InstanceMiddlewares;
 
-require __DIR__.'/../Routes/Routes.php';
+require __DIR__.'/../../Infra/Http/Routes/Routes.php';
 
 class Router
 {
@@ -27,12 +27,9 @@ class Router
     {
         self::validate($method, $path);
 
-        $controllerUseCase = new Controller();
-        $middlewareUseCase = new Middlewares();
-
         self::$routes[$method][$path] = [
-            'controller' => $controllerUseCase->execute($controller),
-            'middlewares' => $middlewareUseCase->execute($middlewares),
+            'controller' => (new InstanceController())->execute($controller),
+            'middlewares' => (new InstanceMiddlewares())->execute($middlewares),
         ];
     }
 

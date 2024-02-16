@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Infra\Http\Core\UseCases;
+namespace App\Core\Infra\UseCase;
 
-class Middlewares
+class InstanceMiddlewares
 {
     public function execute(array $middlewares): array
     {
@@ -24,7 +24,7 @@ class Middlewares
         return $middlewaresInstantiateds;
     }
 
-    private static function isValid($middleware)
+    private function isValid($middleware)
     {
         return $middleware instanceof Middleware;
     }

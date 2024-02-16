@@ -1,8 +1,8 @@
 <?php
 
+use App\Core\Infra\Router;
 use App\Infra\Contracts\Controller;
 use App\Infra\Contracts\Middleware;
-use App\Infra\Http\Core\Router;
 
 class ControllerTest implements Controller
 {
@@ -21,3 +21,4 @@ class MiddlewareTest implements Middleware
 }
 
 Router::get('/leonardo', ControllerTest::class, [MiddlewareTest::class]);
+Router::post('/leonardo', ControllerTest::class, [MiddlewareTest::class]);

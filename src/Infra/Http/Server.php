@@ -2,22 +2,20 @@
 
 namespace App\Infra\Http;
 
+use App\Core\Infra\Adapters\RouteAdpter;
+use App\Core\Infra\Router;
 use App\Infra\Contracts\Controller;
 use App\Infra\Contracts\Kernel;
 use App\Infra\Contracts\Middleware;
-use App\Infra\Http\Core\Router;
 
 class Server implements Kernel
 {
     public static function bootstrap()
     {
-        try {
-            $controller = self::executeRoute();
+        $controller = self::executeRoute();
 
-            $controller->handle();
-        } catch (\Throwable $th) {
-            print $th->getMessage();
-        }
+        $routeAdpter = new RouteAdpter($controller);
+        $routeAdpter->execute();
     }
 
     private static function executeRoute(): Controller
