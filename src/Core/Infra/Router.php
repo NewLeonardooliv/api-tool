@@ -16,11 +16,19 @@ class Router
 
     public static function findRoute(string $method, string $path)
     {
-        if (!self::pathExists($method, $path)) {
-            throw new InvalidRoute('Route not found', 404);
+        foreach (self::$routes[$method] as $route => $config) {
+            if (preg_match(self::compileRoute($route), $path, $matches)) {
+                array_shift($matches);
+
+                return [
+                    'controller' => $config['controller'],
+                    'middlewares' => $config['middlewares'],
+                    'params' => $matches,
+                ];
+            }
         }
 
-        return self::$routes[$method][$path];
+        throw new InvalidRoute('Route not found', 404);
     }
 
     public static function addRoute(string $method, string $path, string $controller, array $middlewares)
@@ -72,5 +80,14 @@ class Router
     private static function pathExists(string $method, string $path): bool
     {
         return isset(self::$routes[$method][$path]);
+    }
+
+    private static function compileRoute(string $route): string
+    {
+        $pattern = str_replace('/', '\/', $route);
+
+        $pattern = preg_replace('/:(\w+)/', '(?P<$1>[^\/]+)', $pattern);
+
+        return '/^'.$pattern.'$/';
     }
 }
