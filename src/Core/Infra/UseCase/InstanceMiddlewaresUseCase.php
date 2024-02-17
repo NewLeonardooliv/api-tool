@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Core\Infra\UseCase;
+use App\Infra\Contracts\Middleware;
 
 class InstanceMiddlewaresUseCase
 {
