@@ -2,7 +2,7 @@
 
 namespace App\Core\Infra\UseCase;
 
-class InstanceMiddlewares
+class InstanceMiddlewaresUseCase
 {
     public function execute(array $middlewares): array
     {

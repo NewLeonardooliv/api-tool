@@ -27,7 +27,7 @@ class Server implements Kernel
 
         self::executeMiddlewares($routeProperties['middlewares']);
 
-        return $routeProperties['controller'];
+        return $routeProperties['controller']::create();
     }
 
     private static function executeMiddlewares(array $middlewares)

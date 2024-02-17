@@ -3,8 +3,8 @@
 namespace App\Core\Infra;
 
 use App\Core\Infra\Errors\InvalidRoute;
-use App\Core\Infra\UseCase\InstanceController;
-use App\Core\Infra\UseCase\InstanceMiddlewares;
+use App\Core\Infra\UseCase\InstanceControllerFactoryUseCase;
+use App\Core\Infra\UseCase\InstanceMiddlewaresUseCase;
 
 require __DIR__.'/../../Infra/Http/Routes/Routes.php';
 
@@ -28,8 +28,8 @@ class Router
         self::validate($method, $path);
 
         self::$routes[$method][$path] = [
-            'controller' => (new InstanceController())->execute($controller),
-            'middlewares' => (new InstanceMiddlewares())->execute($middlewares),
+            'controller' => (new InstanceControllerFactoryUseCase())->execute($controller),
+            'middlewares' => (new InstanceMiddlewaresUseCase())->execute($middlewares),
         ];
     }
 
