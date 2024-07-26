@@ -42,12 +42,7 @@ class MarkDownToJsonUseCase implements UseCase
         ```
         MD;
 
-        try {
-            $json = $this->convertMarkdownToJson($markdownText);
-            print json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-        } catch (\Exception $e) {
-            print 'Erro: '.$e->getMessage();
-        }
+        return $this->convertMarkdownToJson($markdownText);
     }
 
     private function convertMarkdownToJson(string $markdownText): array
