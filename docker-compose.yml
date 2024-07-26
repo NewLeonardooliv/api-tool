@@ -1,0 +1,18 @@
+services: 
+  web:
+    image: nginx:latest
+    container_name: nginx-api-tool
+    restart: always
+    ports:
+    - "80:80"
+    volumes:
+    - ./:/www
+    - ./api.conf:/etc/nginx/conf.d/api.conf
+    links:
+    - php
+
+  php:
+    image: php:8.2-fpm
+    container_name: php-fpm
+    volumes:
+    - ./:/www
