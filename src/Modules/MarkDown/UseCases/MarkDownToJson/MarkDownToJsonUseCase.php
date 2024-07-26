@@ -29,20 +29,25 @@ class MarkDownToJsonUseCase implements UseCase
     public function execute()
     {
         $markdownText = <<<'MD'
-        # Título
-        ## Subtítulo
-        * Item 1
-        * Item 2
-        [Site](https://www.site.com)
-        ![Imagem](https://www.example.com/image.png)
-        > Isso é uma citação.
-        `Código inline`
-        ```php
-        echo "Bloco de código";
-        ```
-        MD;
+            # Título
+            ## Subtítulo
+            * Item 1
+            * Item 2
+            [Site](https://www.site.com)
+            ![Imagem](https://www.example.com/image.png)
+            > Isso é uma citação.
+            `Código inline`
+            ```php
+            echo "Bloco de código";
+            ```
+            MD;
 
-        return $this->convertMarkdownToJson($markdownText);
+        try {
+            $json = $this->convertMarkdownToJson($markdownText);
+            print json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        } catch (Exception $e) {
+            print 'Erro: '.$e->getMessage();
+        }
     }
 
     private function convertMarkdownToJson(string $markdownText): array
@@ -59,19 +64,29 @@ class MarkDownToJsonUseCase implements UseCase
 
     private function parseLine(string $line): array
     {
-        foreach (self::PATTERNS as $pattern => $structure) {
-            if (preg_match($pattern, $line, $matches)) {
-                if ($structure === 'code_block') {
-                    return $this->parseCodeBlock($line);
-                }
-
-                $result = [];
-                foreach ($structure as $key => $value) {
-                    $result[$key] = is_int($value) ? $matches[$value] : $value;
-                }
-
-                return $result;
-            }
+        if (preg_match(self::PATTERN_HEADER_LEVEL_ONE, $line, $matches)) {
+            return ['type' => 'header', 'level' => 1, 'text' => $matches[1]];
+        }
+        if (preg_match(self::PATTERN_HEADER_LEVEL_TWO, $line, $matches)) {
+            return ['type' => 'header', 'level' => 2, 'text' => $matches[1]];
+        }
+        if (preg_match(self::PATTERN_LIST_ITEM, $line, $matches)) {
+            return ['type' => 'list_item', 'text' => $matches[1]];
+        }
+        if (preg_match(self::PATTERN_LINK, $line, $matches)) {
+            return ['type' => 'link', 'text' => $matches[1], 'href' => $matches[2]];
+        }
+        if (preg_match(self::PATTERN_IMAGE, $line, $matches)) {
+            return ['type' => 'image', 'alt' => $matches[1], 'src' => $matches[2]];
+        }
+        if (preg_match(self::PATTERN_BLOCK_QUOTE, $line, $matches)) {
+            return ['type' => 'block_quote', 'text' => $matches[1]];
+        }
+        if (preg_match(self::PATTERN_INLINE_CODE, $line, $matches)) {
+            return ['type' => 'inline_code', 'code' => $matches[1]];
+        }
+        if (preg_match(self::PATTERN_CODE_BLOCK, $line)) {
+            return $this->parseCodeBlock($line);
         }
 
         return ['type' => 'paragraph', 'text' => $line];
