@@ -4,7 +4,7 @@ namespace App\Modules\MarkDown\UseCases\MarkDownToJson;
 
 use App\Infra\Contracts\UseCase;
 
-class MarkdownToJsonConverter implements UseCase
+class MarkDownToJsonUseCase implements UseCase
 {
     public const PATTERN_HEADER_LEVEL_ONE = '/^# (.*)$/';
     public const PATTERN_HEADER_LEVEL_TWO = '/^## (.*)$/';
