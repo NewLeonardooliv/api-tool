@@ -13,17 +13,16 @@ class Server implements Kernel
     public static function bootstrap()
     {
         $controller = self::executeRoute();
-
+        
         $routeAdpter = new RouteAdpter($controller);
         $routeAdpter->execute();
     }
 
     private static function executeRoute(): Controller
     {
-        $method = $_SERVER['REQUEST_METHOD'];
         $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-        $routeProperties = Router::findRoute($method, $path);
+        $routeProperties = Router::findRoute(Request::method(), $path);
 
         self::executeMiddlewares($routeProperties['middlewares']);
 

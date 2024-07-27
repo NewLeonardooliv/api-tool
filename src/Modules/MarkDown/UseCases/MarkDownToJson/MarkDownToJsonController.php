@@ -2,7 +2,10 @@
 
 namespace App\Modules\MarkDown\UseCases\MarkDownToJson;
 
+use App\Helpers\Validator;
 use App\Infra\Contracts\Controller;
+use App\Infra\Http\Request;
+use App\Infra\Http\Response;
 
 class MarkDownToJsonController implements Controller
 {
@@ -13,8 +16,15 @@ class MarkDownToJsonController implements Controller
         $this->markDownToJsonUseCase = $markDownToJsonUseCase;
     }
 
-    public function handle()
+    public function handle(Request $request, Response $response)
     {
-        return $this->markDownToJsonUseCase->execute();
+        $fields = [
+            'markdown' => ['required' => true, 'type' => 'string'],
+        ];
+        $data = $request::validate($fields, $request::body());
+
+        $json = $this->markDownToJsonUseCase->execute($data['markdown']);
+
+        $response::json($json);
     }
 }

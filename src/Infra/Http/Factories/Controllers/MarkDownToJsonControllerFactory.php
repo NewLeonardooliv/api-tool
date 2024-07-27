@@ -11,9 +11,8 @@ class MarkDownToJsonControllerFactory implements Factory
 {
     public static function create(): Controller
     {
-        // $userRepository = InMemoryUserRepository::getInstance();
-        $signInUseCase = new MarkDownToJsonUseCase();
+        $markDownToJsonUseCase = new MarkDownToJsonUseCase();
 
-        return new MarkDownToJsonController($signInUseCase);
+        return new MarkDownToJsonController($markDownToJsonUseCase);
     }
 }

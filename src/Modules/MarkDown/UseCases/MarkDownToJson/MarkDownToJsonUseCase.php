@@ -2,9 +2,7 @@
 
 namespace App\Modules\MarkDown\UseCases\MarkDownToJson;
 
-use App\Infra\Contracts\UseCase;
-
-class MarkDownToJsonUseCase implements UseCase
+class MarkDownToJsonUseCase
 {
     public const PATTERN_HEADER_LEVEL_ONE = '/^# (.*)$/';
     public const PATTERN_HEADER_LEVEL_TWO = '/^## (.*)$/';
@@ -26,28 +24,9 @@ class MarkDownToJsonUseCase implements UseCase
         self::PATTERN_CODE_BLOCK => 'code_block',
     ];
 
-    public function execute()
+    public function execute(string $markdownText)
     {
-        $markdownText = <<<'MD'
-            # Título
-            ## Subtítulo
-            * Item 1
-            * Item 2
-            [Site](https://www.site.com)
-            ![Imagem](https://www.example.com/image.png)
-            > Isso é uma citação.
-            `Código inline`
-            ```php
-            echo "Bloco de código";
-            ```
-            MD;
-
-        try {
-            $json = $this->convertMarkdownToJson($markdownText);
-            print json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-        } catch (Exception $e) {
-            print 'Erro: '.$e->getMessage();
-        }
+        return $this->convertMarkdownToJson($markdownText);
     }
 
     private function convertMarkdownToJson(string $markdownText): array
