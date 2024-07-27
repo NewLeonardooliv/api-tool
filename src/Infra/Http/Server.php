@@ -7,15 +7,26 @@ use App\Core\Infra\Router;
 use App\Infra\Contracts\Controller;
 use App\Infra\Contracts\Kernel;
 use App\Infra\Contracts\Middleware;
+use App\Infra\Http\Exceptions\ValidatorException;
 
 class Server implements Kernel
 {
     public static function bootstrap()
     {
-        $controller = self::executeRoute();
-        
-        $routeAdpter = new RouteAdpter($controller);
-        $routeAdpter->execute();
+        try {
+            $controller = self::executeRoute();
+
+            $routeAdpter = new RouteAdpter($controller);
+            $routeAdpter->execute();
+        } catch (\Throwable $th) {
+            if ($th instanceof ValidatorException) {
+                Response::json([$th->getErrors()], $th->getCode());
+
+                return;
+            }
+
+            Response::json(['message' => $th->getMessage()], $th->getCode());
+        }
     }
 
     private static function executeRoute(): Controller

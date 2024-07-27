@@ -18,9 +18,7 @@ class MarkDownToJsonController implements Controller
 
     public function handle(Request $request, Response $response)
     {
-        $fields = [
-            'markdown' => ['required' => true, 'type' => 'string'],
-        ];
+        $fields = ['markdown' => ['required' => true, 'type' => 'string']];
         $data = $request::validate($fields, $request::body());
 
         $json = $this->markDownToJsonUseCase->execute($data['markdown']);
